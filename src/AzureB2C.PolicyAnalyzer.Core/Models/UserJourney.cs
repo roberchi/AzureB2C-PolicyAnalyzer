@@ -22,7 +22,7 @@ namespace AzureB2C.PolicyAnalyzer.Core.Models
             UserJourney item = new UserJourney(path, node, node.Attribute("Id").Value, references, policy);
             // fill data
             item.OrchestrationSteps = new List<OrchestrationStep>();
-            foreach (var step in item.GetXmlNode().Element(PolicyItem.ns + "OrchestrationSteps").Elements(PolicyItem.ns + "OrchestrationStep"))
+            foreach (var step in item.XmlNode.Element(PolicyItem.ns + "OrchestrationSteps").Elements(PolicyItem.ns + "OrchestrationStep"))
             {
                 item.OrchestrationSteps.Add(OrchestrationStep.Load(item, path, step, references));
             }

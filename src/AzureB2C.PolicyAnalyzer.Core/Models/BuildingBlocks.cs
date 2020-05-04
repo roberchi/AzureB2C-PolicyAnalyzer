@@ -12,7 +12,7 @@ namespace AzureB2C.PolicyAnalyzer.Core.Models
         }
 
         public BuildingBlocks(string filePath, XElement node, ObjectIndex references, Policy policy) :
-            base(filePath, node, $"{policy.Id}_{nameof(BuildingBlocks)}", references, policy)
+            base(filePath, node, null, references, policy)
         {
         }
 
@@ -24,7 +24,7 @@ namespace AzureB2C.PolicyAnalyzer.Core.Models
 
         internal static BuildingBlocks Load(Policy policy, string path, ObjectIndex references)
         {
-            var xmlNode = policy.GetXmlNode().Element(PolicyItem.ns + "BuildingBlocks");
+            var xmlNode = policy.XmlNode.Element(PolicyItem.ns + "BuildingBlocks");
             if (xmlNode == null)
                 return null;
 

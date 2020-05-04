@@ -12,8 +12,8 @@ namespace AzureB2C.PolicyAnalyzer.Core.Models
     public class Policy : BaseItem
     {
         public string PolicyId => this.Id;
-        public string PublicPolicyUri => GetXmlNode().Attribute("PublicPolicyUri").Value;
-        public string TenantId => GetXmlNode().Attribute("TenantId").Value;
+        public string PublicPolicyUri => XmlNode.Attribute("PublicPolicyUri").Value;
+        public string TenantId => XmlNode.Attribute("TenantId").Value;
         public Reference<Policy> BasePolicy { get; private set; }
         public RelyingParty RelyingParty { get; private set; }
         public List<UserJourney> UserJourneys { get; private set; }
@@ -27,8 +27,33 @@ namespace AzureB2C.PolicyAnalyzer.Core.Models
         public Policy(string filePath, XElement node, ObjectIndex references) 
             : base(filePath, node, node.Attribute("PolicyId").Value, references)
         {
-            if(GetXmlNode().Element(PolicyItem.ns + "BasePolicy")?.Element(PolicyItem.ns + "PolicyId")?.Value != null);
-                BasePolicy = new Reference<Policy>(this, GetXmlNode().Element(PolicyItem.ns + "BasePolicy")?.Element(PolicyItem.ns + "PolicyId")?.Value, references);
+            if(XmlNode.Element(PolicyItem.ns + "BasePolicy")?.Element(PolicyItem.ns + "PolicyId")?.Value != null)
+                BasePolicy = new Reference<Policy>(this, XmlNode.Element(PolicyItem.ns + "BasePolicy")?.Element(PolicyItem.ns + "PolicyId")?.Value, references);
+
+            if (XmlNode.Element("UserJourneys") != null)
+            {
+                this.UserJourneys = new List<UserJourney>();
+                foreach (var uj in XmlNode.Element("UserJourneys").Elements("UserJourney"))
+                {
+                    this.UserJourneys.Add(UserJourney.Load(this, filePath, uj, references));
+                }
+            }
+
+            // RelyingParty
+            this.RelyingParty = RelyingParty.Load(this, filePath, references);
+            // BuildingBlocks
+            this.BuildingBlocks = BuildingBlocks.Load(this, filePath, references);
+
+            // ClaimsProviders
+            if (XmlNode.Element(PolicyItem.ns + "ClaimsProviders") != null)
+            {
+                this.ClaimsProviders = new List<ClaimsProvider>();
+                foreach (var cp in XmlNode.Element(PolicyItem.ns + "ClaimsProviders").Elements(PolicyItem.ns + "ClaimsProvider"))
+                {
+                    this.ClaimsProviders.Add(ClaimsProvider.Load(this, filePath, cp, references));
+                }
+            }
+
 
         }
 
@@ -39,16 +64,6 @@ namespace AzureB2C.PolicyAnalyzer.Core.Models
             CancellationToken token = source.Token;
             XDocument xml = await XDocument.LoadAsync(stream, LoadOptions.None, token);
             var policy = new Policy(path, xml.Root, references);
-
-            // RelyingParty
-            policy.RelyingParty = RelyingParty.Load(policy, path, references);
-
-            policy.UserJourneys = new List<UserJourney>();
-            foreach (var node in xml.Root.Element("UserJourneys").Elements("UserJourney"))
-            {
-                policy.UserJourneys.Add(UserJourney.Load(policy, path, node, references));
-            }
-
             return policy;
         }
 
@@ -58,33 +73,6 @@ namespace AzureB2C.PolicyAnalyzer.Core.Models
             CancellationToken token = source.Token;
             XDocument xml = XDocument.Parse(data);
             var policy = new Policy(path, xml.Root, references);
-
-            // RelyingParty
-            policy.RelyingParty = RelyingParty.Load(policy, path, references);
-
-            // journey
-            policy.UserJourneys = new List<UserJourney>();
-            if (xml.Root.Element(PolicyItem.ns + "UserJourneys") != null)
-            {
-                foreach (var node in xml.Root.Element(PolicyItem.ns + "UserJourneys").Elements(PolicyItem.ns + "UserJourney"))
-                {
-                    policy.UserJourneys.Add(UserJourney.Load(policy, path, node, references));
-                }
-            }
-
-            // BuildingBlocks
-            policy.BuildingBlocks = BuildingBlocks.Load(policy, path, references);
-
-
-            // ClaimsProviders
-            policy.ClaimsProviders = new List<ClaimsProvider>();
-            if (xml.Root.Element(PolicyItem.ns + "ClaimsProviders") != null)
-            {
-                foreach (var node in xml.Root.Element(PolicyItem.ns + "ClaimsProviders").Elements(PolicyItem.ns + "ClaimsProvider"))
-                {
-                    policy.ClaimsProviders.Add(ClaimsProvider.Load(policy, path, node, references));
-                }
-            }
             return policy;
         }
 

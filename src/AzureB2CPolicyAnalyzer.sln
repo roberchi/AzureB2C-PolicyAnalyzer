@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureB2C.PolicyAnalyzer.Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureB2C.PolicyAnalyzer.Core.Test", "AzureB2C.PolicyAnalyzer.Core.Test\AzureB2C.PolicyAnalyzer.Core.Test.csproj", "{521F021D-B611-437D-8488-0868A5249BFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azure B2C.PolicyAnalyzer.Jupyter.Extensions", "Azure B2C.PolicyAnalyzer.Jupyter.Extensions\Azure B2C.PolicyAnalyzer.Jupyter.Extensions.csproj", "{E1D8D844-5EBF-43E0-B216-06E38CD66983}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azure B2C.PolicyAnalyzer.Jupyter.Extensions", "Azure B2C.PolicyAnalyzer.Jupyter.Extensions\Azure B2C.PolicyAnalyzer.Jupyter.Extensions.csproj", "{E1D8D844-5EBF-43E0-B216-06E38CD66983}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notebooks", "Notebooks", "{252F3FD0-08D7-4218-85DF-3E8C91A21A71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -5,4 +5,13 @@
     <RootNamespace>Azure_B2C.PolicyAnalyzer.Jupyter.Extensions</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="microsoft.dotnet.interactive" Version="1.0.0-beta.20121.20" />
+    <PackageReference Include="microsoft.dotnet.interactive.formatting" Version="1.0.0-beta.20121.20" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AzureB2C.PolicyAnalyzer.Core\AzureB2C.PolicyAnalyzer.Core.csproj" />
+  </ItemGroup>
+
 </Project>

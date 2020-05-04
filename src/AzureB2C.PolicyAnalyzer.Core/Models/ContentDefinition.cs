@@ -4,9 +4,9 @@ namespace AzureB2C.PolicyAnalyzer.Core.Models
 {
     public class ContentDefinition : PolicyItem
     {
-        public string LoadUri => GetXmlNode().Element(PolicyItem.ns + "LoadUri").Value;
-        public string RecoveryUri => GetXmlNode().Element(PolicyItem.ns + "RecoveryUri").Value;
-        public string DataUri => GetXmlNode().Element(PolicyItem.ns + "DataUri").Value;
+        public string LoadUri => XmlNode.Element(PolicyItem.ns + "LoadUri").Value;
+        public string RecoveryUri => XmlNode.Element(PolicyItem.ns + "RecoveryUri").Value;
+        public string DataUri => XmlNode.Element(PolicyItem.ns + "DataUri").Value;
 
 
         public ContentDefinition()

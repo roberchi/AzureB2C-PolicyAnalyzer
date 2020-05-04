@@ -8,17 +8,17 @@ namespace AzureB2C.PolicyAnalyzer.Core.Models
     public class RelyingParty : PolicyItem
     {
         public RelyingParty(string filePath, XElement node, ObjectIndex references, Policy policy) :
-            base(filePath, node, $"{policy.Id}_{nameof(RelyingParty)}", references, policy)
+            base(filePath, node, null, references, policy)
         {
-            if(GetXmlNode().Element(PolicyItem.ns + "DefaultUserJourney")?.Attribute("ReferenceId")?.Value != null)
-                DefaultUserJourney = new Reference<UserJourney>(this, GetXmlNode().Element(PolicyItem.ns + "DefaultUserJourney")?.Attribute("ReferenceId")?.Value, references); 
+            if(XmlNode.Element(PolicyItem.ns + "DefaultUserJourney")?.Attribute("ReferenceId")?.Value != null)
+                DefaultUserJourney = new Reference<UserJourney>(this, XmlNode.Element(PolicyItem.ns + "DefaultUserJourney")?.Attribute("ReferenceId")?.Value, references); 
         }
 
         public Reference<UserJourney> DefaultUserJourney { get; private set; }
         
         internal static RelyingParty Load(Policy policy, string path, ObjectIndex references)
         {
-            var xmlNode = policy.GetXmlNode().Element(PolicyItem.ns + "RelyingParty");
+            var xmlNode = policy.XmlNode.Element(PolicyItem.ns + "RelyingParty");
             if(xmlNode == null)
                 return null;
             

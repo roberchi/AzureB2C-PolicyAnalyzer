@@ -16,7 +16,7 @@ namespace AzureB2C.PolicyAnalyzer.Core.Models
 
     public class Predicate : PolicyItem
     {
-        public string Method => GetXmlNode().Attribute("Method").Value;
+        public string Method => XmlNode.Attribute("Method").Value;
 
         public Predicate()
            : base()

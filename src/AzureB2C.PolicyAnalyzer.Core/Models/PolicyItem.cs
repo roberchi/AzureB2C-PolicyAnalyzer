@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Xml.Linq;
 
@@ -7,6 +8,7 @@ namespace AzureB2C.PolicyAnalyzer.Core.Models
 {
     public abstract class PolicyItem : BaseItem
     {
+        [Browsable(false)]
         public Policy Policy { get; private set; }
         public PolicyItem() : base()
         {

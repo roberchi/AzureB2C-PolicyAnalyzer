@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
 using System.Xml.Linq;
 
 namespace AzureB2C.PolicyAnalyzer.Core.Models
@@ -6,17 +7,19 @@ namespace AzureB2C.PolicyAnalyzer.Core.Models
     public abstract class BaseItem
     {
         protected ObjectIndex References { get; private set; }
+
+        [Browsable(false)]
         public BaseItem Container { get; private set; }
+        [System.ComponentModel.Category("Main")]
         public string SourceFile{ get; private set; }
 
+        [System.ComponentModel.Category("Main")]
         public string Id { get; internal set; }
 
         private XElement xmlNode;
 
-        public XElement GetXmlNode()
-        {
-            return xmlNode;
-        }
+        [Browsable(false)]
+        public XElement XmlNode => xmlNode;
 
         public BaseItem()
         {

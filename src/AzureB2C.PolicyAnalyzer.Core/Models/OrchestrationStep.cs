@@ -8,19 +8,19 @@ namespace AzureB2C.PolicyAnalyzer.Core.Models
 
     public class OrchestrationStep : PolicyItem
     {
-        public int Order => int.Parse(GetXmlNode().Attribute("Order").Value);
-        public string Type => GetXmlNode().Attribute("Type").Value;
+        public int Order => int.Parse(XmlNode.Attribute("Order").Value);
+        public string Type => XmlNode.Attribute("Type").Value;
 
         public Reference<ContentDefinition> ContentDefinition { get; private set; }
         public Reference<TechnicalProfile> CpimIssuerTechnicalProfile { get; private set; }
         
         public OrchestrationStep(string filePath, XElement node, ObjectIndex references, BaseItem parent) 
-            : base(filePath, node, $"{parent.Id}_{nameof(OrchestrationStep)}_{node.Attribute("Order").Value}", references, parent)
+            : base(filePath, node, null, references, parent)
         {
-            if (GetXmlNode().Attribute(PolicyItem.ns + "ContentDefinitionReferenceId") != null)
-                ContentDefinition = new Reference<ContentDefinition>(this, GetXmlNode().Attribute(PolicyItem.ns + "ContentDefinitionReferenceId").Value, references);
-            if (GetXmlNode().Attribute(PolicyItem.ns + "CpimIssuerTechnicalProfileId") != null)
-                CpimIssuerTechnicalProfile = new Reference<TechnicalProfile>(this, GetXmlNode().Attribute(PolicyItem.ns + "CpimIssuerTechnicalProfileId").Value, references);
+            if (XmlNode.Attribute(PolicyItem.ns + "ContentDefinitionReferenceId") != null)
+                ContentDefinition = new Reference<ContentDefinition>(this, XmlNode.Attribute(PolicyItem.ns + "ContentDefinitionReferenceId").Value, references);
+            if (XmlNode.Attribute(PolicyItem.ns + "CpimIssuerTechnicalProfileId") != null)
+                CpimIssuerTechnicalProfile = new Reference<TechnicalProfile>(this, XmlNode.Attribute(PolicyItem.ns + "CpimIssuerTechnicalProfileId").Value, references);
 
         }
 

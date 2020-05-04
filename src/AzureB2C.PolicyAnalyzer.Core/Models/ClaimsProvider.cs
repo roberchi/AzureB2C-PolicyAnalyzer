@@ -12,12 +12,12 @@ namespace AzureB2C.PolicyAnalyzer.Core.Models
             : base()
         { }
         public ClaimsProvider(string filePath, XElement node, ObjectIndex references, BaseItem parent) 
-            : base(filePath, node, $"{parent.Id}_ClaimsProviders_{nameof(ClaimsProvider)}", references, parent)
+            : base(filePath, node, null, references, parent)
         {
         }
 
-        public string DisplayName => GetXmlNode().Element(PolicyItem.ns + "DisplayName").Value;
-        public string Domain => GetXmlNode().Element(PolicyItem.ns + "Domain")?.Value;
+        public string DisplayName => XmlNode.Element(PolicyItem.ns + "DisplayName").Value;
+        public string Domain => XmlNode.Element(PolicyItem.ns + "Domain")?.Value;
         public List<TechnicalProfile> TechnicalProfiles { get; private set; }
 
         internal static ClaimsProvider Load(Policy policy, string path, XElement node, ObjectIndex references)
@@ -25,7 +25,7 @@ namespace AzureB2C.PolicyAnalyzer.Core.Models
             ClaimsProvider item = new ClaimsProvider(path, node, references, policy);
             // fill data
             item.TechnicalProfiles = new List<TechnicalProfile>();
-            foreach (var step in item.GetXmlNode().Element(PolicyItem.ns + "TechnicalProfiles").Elements(PolicyItem.ns + "TechnicalProfile"))
+            foreach (var step in item.XmlNode.Element(PolicyItem.ns + "TechnicalProfiles").Elements(PolicyItem.ns + "TechnicalProfile"))
             {
                 item.TechnicalProfiles.Add(TechnicalProfile.Load(item, path, step, references));
             }
